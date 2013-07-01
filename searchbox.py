@@ -21,8 +21,19 @@ class Root(object):
 		new_key = prt_ltr+key
 		prt_nd.ltrs[new_key] = old_key_val #contains right .end bool 
 		self.compress(old_key_val, prt_nd, new_key)
+	return 
 	    
-    
+    def addDepth(self, node):
+
+	if node.getSize()==0:
+	    return 0
+	else:
+	    node.depth = node.getSize()	    
+	    for b in node.ltrs:		
+		node.depth += self.addDepth(node.ltrs[b])
+	
+	return node.depth
+
     def populate(self, textfile): #str textfile
 	'''Non-recursive'''
 	curr=self.root	
@@ -52,22 +63,31 @@ class Root(object):
 	if node.end:
 	    print word
 	for l in node.ltrs:
-		self.getWords(word = word + l, node=node.ltrs[l], prt_nd=node)
+	    self.getWords(word = word + l, node=node.ltrs[l], prt_nd=node)
 	    	    
 
 class Node(object):
     def __init__(self):
 	self.ltrs={}
 	self.end = False #a letter that points to self is the end of a full word
+	self.depth = 0
 	
     def getSize(self):
 	return len(self.ltrs)
 
+    def isEmpty(self):
+	if self.getSize():
+	    return False
+	return True
+
 
 p = Root()
-p.populate("with an ability to compress myself")
-p.populate("i am a search box tree")
-p.populate("hello world")
+p.populate("hello"),p.populate("world"),p.populate("im"),p.populate("an"),p.populate("optimized"),p.populate("search"),p.populate("box"),p.populate("tree"),p.populate("with"),p.populate("lesser"),p.populate("levels"),p.populate("and"),p.populate("better"),p.populate("performance"),p.populate("although"),p.populate("there")
+p.populate("is"),p.populate("room"),p.populate("for"),p.populate("improvement")
+
+
+p.addDepth(p.root)
 p.compress(p.root)
+p.addDepth(p.root)
 p.getWords(node=p.root)
 
