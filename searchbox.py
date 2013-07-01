@@ -53,19 +53,52 @@ class Root(object):
 		curr = next
 	curr.end=True
 
-
-    def getWords(self, word = "", node=None, prt_nd=None):
+	
+    def getAllWords(self, word = "", node=None, prt_nd=None):
 	
 	if node.getSize() == 0:
 	    print word
-	    return ""
+	    return
 
 	if node.end:
 	    print word
 	for l in node.ltrs:
-	    self.getWords(word = word + l, node=node.ltrs[l], prt_nd=node)
-	    	    
+	    self.getAllWords(word = word + l, node=node.ltrs[l], prt_nd=node)
 
+
+#NOT TESTED===========
+    def printAllWordsAfterWord(word):
+	
+	n = self.getEndNodeForWord(self.root, word)
+	self.getAllWordsAfterNode(n, word)
+
+    def getEndNodeForWord(self, node, word):
+	'''Trace from given node until the last letter of word
+		 is reached or return None '''
+	curr=node
+	text = [l for l in textfile]
+	if self.root==None:
+	    return None
+	else:
+	    for l in text:
+		if l in curr.ltrs:
+		    curr = curr.ltrs[l]
+		else:
+		    return None
+	return curr
+
+    def printAllWordsAfterNode(self, node, projection = ""):
+	
+	if node.getSize() == 0:
+	    print projection
+	    return
+
+	if node.end:
+	    print projection
+
+	for l in node.ltrs:
+	    self.getAllWordsAfter(node.ltrs[l], projection = projection+l)
+#=========================
 class Node(object):
     def __init__(self):
 	self.ltrs={}
@@ -82,12 +115,13 @@ class Node(object):
 
 
 p = Root()
-p.populate("hello"),p.populate("world"),p.populate("im"),p.populate("an"),p.populate("optimized"),p.populate("search"),p.populate("box"),p.populate("tree"),p.populate("with"),p.populate("lesser"),p.populate("levels"),p.populate("and"),p.populate("better"),p.populate("performance"),p.populate("although"),p.populate("there")
-p.populate("is"),p.populate("room"),p.populate("for"),p.populate("improvement")
 
+s = "hello world, im an optimized search tree with lesser levels and better performance, although there is a room for improvement"
+for w in s.split():
+    p.populate(w)
 
 p.addDepth(p.root)
 p.compress(p.root)
 p.addDepth(p.root)
-p.getWords(node=p.root)
+p.getAllWords(node=p.root)
 
