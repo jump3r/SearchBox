@@ -66,7 +66,7 @@ class Node(object):
 
 p = Root()
 p.populate("with an ability to compress myself")
-p.populate("i am a search box")
+p.populate("i am a search box tree")
 p.populate("hello world")
 p.compress(p.root)
 p.getWords(node=p.root)
