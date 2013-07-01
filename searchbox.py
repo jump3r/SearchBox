@@ -65,18 +65,19 @@ class Root(object):
 	for l in node.ltrs:
 	    self.getAllWords(word = word + l, node=node.ltrs[l], prt_nd=node)
 
-
-#NOT TESTED===========
-    def printAllWordsAfterWord(word):
+    def printAllWordsAfterWord(self,word):
 	
 	n = self.getEndNodeForWord(self.root, word)
-	self.getAllWordsAfterNode(n, word)
+	if n == None:
+	    print "No words that start with >",word, "< were found"
+	    return
+	self.printAllWordsAfterNode(n, word)
 
     def getEndNodeForWord(self, node, word):
 	'''Trace from given node until the last letter of word
 		 is reached or return None '''
 	curr=node
-	text = [l for l in textfile]
+	text = [l for l in word]
 	if self.root==None:
 	    return None
 	else:
@@ -97,8 +98,8 @@ class Root(object):
 	    print projection
 
 	for l in node.ltrs:
-	    self.getAllWordsAfter(node.ltrs[l], projection = projection+l)
-#=========================
+	    self.printAllWordsAfterNode(node.ltrs[l], projection = projection+l)
+
 class Node(object):
     def __init__(self):
 	self.ltrs={}
@@ -114,14 +115,26 @@ class Node(object):
 	return True
 
 
-p = Root()
+if __name__ == "__main__":
 
-s = "hello world, im an optimized search tree with lesser levels and better performance, although there is a room for improvement"
-for w in s.split():
-    p.populate(w)
+    p = Root()
+    #for w in open("stopwords.txt", 'r'):
+	#p.populate(w[:-1])
 
-p.addDepth(p.root)
-p.compress(p.root)
-p.addDepth(p.root)
-p.getAllWords(node=p.root)
+    s = "hello world , im an optimized search tree with lesser levels and better performance , although there is a room for improvement"
+    for w in s.split():
+        p.populate(w)
+
+    p.compress(p.root)
+    p.addDepth(p.root)
+
+    input =""
+    while (1):
+	l = raw_input("Type: ")
+	if l=="exit":
+	    break
+	p.printAllWordsAfterWord(l)
+	
+	
+
 
